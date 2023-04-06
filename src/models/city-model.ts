@@ -1,16 +1,15 @@
 import { Model, InferAttributes, InferCreationAttributes, DataTypes, CreationOptional, ForeignKey } from 'sequelize';
 import db from "../configs/db/db";
-import CountryModel from './country-model';
-import CityModel from './city-model';
+import StateModel from './state-model';
 
-class StateModel extends Model<InferAttributes<StateModel>,InferCreationAttributes<StateModel>> {
+class CityModel extends Model<InferAttributes<CityModel>,InferCreationAttributes<CityModel>> {
     declare id:CreationOptional<string>
     declare name:string
     declare status:boolean
-    declare countryId : ForeignKey<CountryModel['id']>
+    declare stateId : ForeignKey<StateModel['id']>
 }
 
-StateModel.init({
+CityModel.init({
     id:{
         type:DataTypes.UUID,
         defaultValue:DataTypes.UUIDV4,
@@ -26,19 +25,11 @@ StateModel.init({
         defaultValue:true
     }
 },{
-    tableName:'states',
+    tableName:'cities',
     underscored:true,
     freezeTableName:true,
     timestamps:true,
     sequelize:db
 });
 
-StateModel.hasMany(
-    CityModel,
-    {
-        sourceKey:'id',
-        foreignKey:'state_id'
-    }
-)
-
-export default StateModel
+export default CityModel
