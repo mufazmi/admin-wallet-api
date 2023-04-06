@@ -1,12 +1,12 @@
 import {Request,Response, NextFunction } from "express"
-import otpTemplateValidation from "../validations/otp-template-validation"
-import otpTemplateService from "../services/otp-template-service";
+import otpTemplateValidation from "../validations/message-template-validation"
+import otpTemplateService from "../services/message-template-service";
 import responseSuccess from "../utils/response";
 import Constants from "../utils/constants";
 import ErrorHandler from "../utils/error-handler";
 
 
-class OtpTemplateController {
+class MessageTemplateController {
 
     create = async (req:Request,res:Response,next:NextFunction) => {
         const body = await otpTemplateValidation.create.validateAsync(req.body);
@@ -32,4 +32,4 @@ class OtpTemplateController {
     }
 }
 
-export default OtpTemplateController
+export default MessageTemplateController

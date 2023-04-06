@@ -1,7 +1,7 @@
 import { Model, InferAttributes, InferCreationAttributes, DataTypes, CreationOptional } from 'sequelize';
 import db from "../configs/db/db";
 
-class OtpTemplateModel extends Model<InferAttributes<OtpTemplateModel>,InferCreationAttributes<OtpTemplateModel>> {
+class MessageTemplateModel extends Model<InferAttributes<MessageTemplateModel>,InferCreationAttributes<MessageTemplateModel>> {
     declare id:CreationOptional<string>
     declare title:string
     declare type:string
@@ -10,7 +10,7 @@ class OtpTemplateModel extends Model<InferAttributes<OtpTemplateModel>,InferCrea
     declare status:boolean
 }
 
-OtpTemplateModel.init({
+MessageTemplateModel.init({
     id:{
         type:DataTypes.UUID,
         defaultValue:DataTypes.UUIDV4,
@@ -38,11 +38,11 @@ OtpTemplateModel.init({
         defaultValue:true
     }
 },{
-    tableName:'otp_templates',
+    tableName:'message_templates',
     underscored:true,
     freezeTableName:true,
     timestamps:true,
     sequelize:db
 });
 
-export default OtpTemplateModel
+export default MessageTemplateModel

@@ -1,6 +1,6 @@
 import Joi from 'joi'
 
-class OtpTemplateValidation {
+class MessageTemplateValidation {
 
     create = Joi.object({
         title:Joi.string().min(3).max(100).required(),
@@ -20,4 +20,4 @@ class OtpTemplateValidation {
 
 }
 
-export default new OtpTemplateValidation
+export default new MessageTemplateValidation
