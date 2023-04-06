@@ -11,7 +11,7 @@ class OtpTemplateController {
     create = async (req:Request,res:Response,next:NextFunction) => {
         const body = await otpTemplateValidation.create.validateAsync(req.body);
         const data = await otpTemplateService.create(body);
-        return data ? responseSuccess({res:res,message:Constants.MESSAGE.TEMPLATE_MESSAGE_CREATED}) :  next(ErrorHandler.serverError(Constants.MESSAGE.TEMPLATE_MESSAGE_CREATION_FAILED));
+        return data ? responseSuccess({res:res,message:Constants.MESSAGE.TEMPLATE_MESSAGE_CREATED}) : next(ErrorHandler.serverError(Constants.MESSAGE.TEMPLATE_MESSAGE_CREATION_FAILED));
     }
 
     update = async (req:Request,res:Response,next:NextFunction) => {
