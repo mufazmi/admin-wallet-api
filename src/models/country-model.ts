@@ -18,12 +18,14 @@ CountryModel.init({
     },
     name:{
         type:DataTypes.STRING(128),
-        allowNull:false
+        allowNull:false,
+        unique:true
     },
     code:{
         type:DataTypes.STRING(10),
         allowNull:false,
-        unique:true
+        unique:true,
+        
     },
     status:{
         type:DataTypes.BOOLEAN,
