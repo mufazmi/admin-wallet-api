@@ -8,8 +8,9 @@ class MessageTemplateService{
 
     findAll = async (filter:any) => await MessageTemplate.findAll({where:filter});
 
-
     update = async (filter:any,data:any) => await MessageTemplate.update(data,{where:filter});
+
+    destroy = async (filter:any) => await MessageTemplate.destroy({where:filter});
     
 }
 
