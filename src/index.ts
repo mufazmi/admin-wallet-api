@@ -18,9 +18,7 @@ app.use(express.json())
 //Cookie Parser Middleware
 // app.use(cookieParser);
 
-
 //Main Route
-
 import mainRoute from './routes';
 app.use('/api/v1',mainRoute);
 
