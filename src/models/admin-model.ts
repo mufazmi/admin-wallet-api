@@ -67,6 +67,7 @@ Admin.init({
         defaultValue:false,
     }
 },{
+
     tableName:'admins',
     timestamps:true,
     underscored:true,

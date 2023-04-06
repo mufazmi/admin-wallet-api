@@ -1,5 +1,6 @@
 import { Model, InferAttributes, InferCreationAttributes, DataTypes, CreationOptional } from 'sequelize';
 import db from "../configs/db/db";
+import StateModel from './state-model';
 
 class CountryModel extends Model<InferAttributes<CountryModel>,InferCreationAttributes<CountryModel>> {
     declare id:CreationOptional<string>
@@ -35,5 +36,10 @@ CountryModel.init({
     timestamps:true,
     sequelize:db
 });
+
+CountryModel.hasMany(StateModel,{
+    sourceKey:'id',
+    foreignKey:'country_id'
+})
 
 export default CountryModel
