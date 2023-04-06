@@ -1,14 +1,14 @@
 import { Model, InferAttributes, InferCreationAttributes, DataTypes, ForeignKey, CreationOptional, HasManyAddAssociationMixin, HasMany } from 'sequelize';
 import db from "../configs/db/db";
 import Constants from '../utils/constants';
-import User from './admin-model';
+import Admin from './admin-model';
 
 class Otp extends Model<InferAttributes<Otp>,InferCreationAttributes<Otp>> {
     declare id:CreationOptional<string>
     declare otp:string
     declare type:CreationOptional<string>
-    // declare setUser: HasManyAddAssociationMixin<User, string>;
-    declare userId: ForeignKey<User['id']>
+    // declare setAdmin: HasManyAddAssociationMixin<Admin, string>;
+    declare userId: ForeignKey<Admin['id']>
 }
 
 Otp.init({
@@ -36,7 +36,7 @@ Otp.init({
 });
 
 
-// Otp.belongsTo(User,{targetKey:'id'});
+// Otp.belongsTo(Admin,{targetKey:'id'});
 
 
 export default Otp

@@ -5,7 +5,7 @@ class MessageTemplateModel extends Model<InferAttributes<MessageTemplateModel>,I
     declare id:CreationOptional<string>
     declare title:string
     declare type:string
-    declare templateId:string
+    declare template_id:string
     declare template:string
     declare status:boolean
 }
@@ -23,11 +23,13 @@ MessageTemplateModel.init({
     },
     type:{
         type:DataTypes.STRING(128),
-        allowNull:false
+        allowNull:false,
+        unique:true
     },
-    templateId:{
+    template_id:{
         type:DataTypes.STRING(128),
-        allowNull:false
+        allowNull:false,
+        unique:true
     },
     template:{
         type:DataTypes.STRING(2000),

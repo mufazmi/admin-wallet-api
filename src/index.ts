@@ -19,9 +19,11 @@ app.use(express.json())
 
 //Routes
 import authRoute from './routes/auth-route';
+import messageTemplateRoute from './routes/message-template-route';
 
 //Auth Route
 app.use('/api/v1/auth',authRoute);
+app.use('/api/v1/message/template',messageTemplateRoute);
 
 // Not Found Middleware
 app.use((req:Request,res:Response,next:NextFunction)=>{

@@ -32,4 +32,4 @@ class MessageTemplateController {
     }
 }
 
-export default MessageTemplateController
+export default new MessageTemplateController

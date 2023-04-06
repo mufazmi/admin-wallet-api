@@ -6,7 +6,7 @@ class MessageTemplateValidation {
         title:Joi.string().min(3).max(100).required(),
         type : Joi.string().min(2).required(),
         template_id: Joi.string().min(2).max(50).required(),
-        templates:Joi.string().min(10).required(),
+        template:Joi.string().min(10).required(),
         status:Joi.boolean().default(true)
     });
 
@@ -14,7 +14,7 @@ class MessageTemplateValidation {
         title:Joi.string().min(3).max(100).optional(),
         type : Joi.string().min(2).optional(),
         template_id: Joi.string().min(2).max(50).optional(),
-        templates:Joi.string().min(10).optional(),
+        template:Joi.string().min(10).optional(),
         status:Joi.boolean().optional()
     });
 
