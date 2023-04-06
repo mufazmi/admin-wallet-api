@@ -27,8 +27,9 @@ class Constants{
       FORGOT_PASSWORD:'forgot_password'
      }
 
-     static OTP = {
-      TEMPLATE_CREATED : 'Template Created Successfully'
+     static MESSAGE = {
+      TEMPLATE_MESSAGE_CREATED : 'Template Created Successfully',
+      TEMPLATE_MESSAGE_CREATION_FAILED : 'Failed To Create Template',
      }
 
 }
