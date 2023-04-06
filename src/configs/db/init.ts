@@ -6,6 +6,7 @@ import MessageTemplateModel from "../../models/message-template-model";
 import config from "../config";
 import StateModel from "../../models/state-model";
 import CityModel from "../../models/city-model";
+import NotificationTokenModel from "../../models/notification-token-model";
 require('./db')
 
 const isDev = config.APP_ENV === 'development'
@@ -18,6 +19,7 @@ const dbInit = async () =>{
     await CountryModel.sync({alter:isDev})
     await StateModel.sync({alter:isDev})
     await CityModel.sync({alter:isDev})
+    await NotificationTokenModel.sync({alter:isDev})
 }
 
 export default dbInit

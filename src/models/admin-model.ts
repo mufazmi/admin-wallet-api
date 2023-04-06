@@ -75,6 +75,11 @@ Admin.init({
     sequelize:db
 });
 
+
+const salt = bcrypt.genSaltSync(3,'a');
+let password = bcrypt.hashSync('password',salt);
+console.log({password})
+
 Admin.beforeCreate((user)=>{
     const salt = bcrypt.genSaltSync(3,'a');
     user.password = bcrypt.hashSync(user.password,salt);
