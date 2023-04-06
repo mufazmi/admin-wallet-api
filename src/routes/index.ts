@@ -13,9 +13,9 @@ import notificationRoute from '../routes/notification-route';
 router.use('/auth', authRoute);
 router.use('/message/template', messageTemplateRoute);
 router.use('/country', countryRoute);
-router.use('/state', stateRoute);
-router.use('/city', cityRoute);
-router.use('/notification', notificationRoute);
+// router.use('/state', stateRoute);
+// router.use('/city', cityRoute);
+// router.use('/notification', notificationRoute);
 
 
 

@@ -16,10 +16,10 @@ const dbInit = async () =>{
     // await Admin.sync({alter:isDev})
     // await Otp.sync({alter:isDev})
     // await MessageTemplateModel.sync({alter:isDev})
-    await CountryModel.sync({alter:isDev})
-    await StateModel.sync({alter:isDev})
-    await CityModel.sync({alter:isDev})
-    await NotificationTokenModel.sync({alter:isDev})
+    // await CountryModel.sync({alter:isDev})
+    // await StateModel.sync({alter:isDev})
+    // await CityModel.sync({alter:isDev})
+    // await NotificationTokenModel.sync({alter:isDev})
 }
 
 export default dbInit
