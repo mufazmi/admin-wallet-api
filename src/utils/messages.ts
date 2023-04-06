@@ -12,6 +12,16 @@ class Messages {
         INVALID_ACCESS_TOKEN: "Invalid Authorization"
     }
 
+    static MESSAGE = {
+        TEMPLATE_MESSAGE_CREATED: 'Template Created Successfully',
+        TEMPLATE_MESSAGE_CREATION_FAILED: 'Failed To Create Template',
+        TEMPLATE_MESSAGE_FOUND: 'Message Template Found',
+        TEMPLATE_MESSAGE_NOT_FOUND: 'No Message Template Found',
+        TEMPLATE_MESSAGE_UPDATED: 'Message Template Updated',
+        TEMPLATE_MESSAGE_UPDATE_FAILED: 'Failed To Updated Message Template',
+        TEMPLATE_MESSAGE_DELATED: 'Message Template Deleted',
+        TEMPLATE_MESSAGE_DELETE_FAILED: 'Failed To Delete Message Template'
+    }
 
     static COUNTRY = {
         COUNTRY_CREATED: 'Country Created Successfully',

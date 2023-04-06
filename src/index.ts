@@ -4,6 +4,7 @@ import ErrorHandler from './utils/error-handler';
 import errorMiddleware from './middlewares/error-middleware';
 const cookieParser = require('cookie-parser');
 
+
 dotenv.config()
 import dbInit from './configs/db/init';
 
@@ -17,13 +18,12 @@ app.use(express.json())
 //Cookie Parser Middleware
 // app.use(cookieParser);
 
-//Routes
-import authRoute from './routes/auth-route';
-import messageTemplateRoute from './routes/message-template-route';
 
-//Auth Route
-app.use('/api/v1/auth',authRoute);
-app.use('/api/v1/message/template',messageTemplateRoute);
+//Main Route
+
+import mainRoute from './routes';
+app.use('/api/v1',mainRoute);
+
 
 // Not Found Middleware
 app.use((req:Request,res:Response,next:NextFunction)=>{
