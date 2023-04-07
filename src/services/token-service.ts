@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import TokenModel from "../models/token-model";
 
 const accessKey: string = process.env.ACCESS_KEY || '';
 const refreshKey: string = process.env.REFRESH_KEY || '';
@@ -26,6 +27,10 @@ class TokenService {
     verifyAccessToken = (token: string): {} => jwt.verify(token, accessKey);
 
     verifyRefreshToken = (token: string): {} => jwt.verify(token, refreshKey);
+    
+    storeRefreshToken = async (data:any) => await TokenModel.create(data);
+
+    findRefreshToken = async ({filter}:any) => TokenModel.findOne({where:filter});
 
 }
 
