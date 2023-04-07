@@ -5,10 +5,11 @@ import ErrorHandler from "../utils/error-handler";
 
 const auth = async (req:Request,res:Response,next:NextFunction)  =>{
 
-    console.log(req.header("authorization"));
-    console.log(req.header("refresh"));
-    return next();
-    const {access_token: accessTokenRequest, refresh_token: refreshTokenReq} = req.cookies;
+    // console.log(req.header("authorization"));
+    // console.log(req.header("refresh"));
+    // const {authorization: accessTokenRequest, refresh: refreshTokenReq} = req.header;
+    const accessTokenRequest:string = req.header("authorization") ?? '';
+    const refreshTokenReq :string = req.header("refresh") ?? '';
 
     try{
         const tokenUser = tokenService.verifyAccessToken({token:accessTokenRequest});

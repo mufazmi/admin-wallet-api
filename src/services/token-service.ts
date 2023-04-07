@@ -24,9 +24,9 @@ class TokenService {
         return { accessToken, refreshToken }
     }
 
-    verifyAccessToken = (token: string): {} => jwt.verify(token, accessKey);
+    verifyAccessToken = ({token}:{token:string}): {} => jwt.verify(token, accessKey);
 
-    verifyRefreshToken = (token: string): {} => jwt.verify(token, refreshKey);
+    verifyRefreshToken = ({token}:{token:string}): {} => jwt.verify(token, refreshKey);
     
     storeRefreshToken = async (data:any) => await TokenModel.create(data);
 
