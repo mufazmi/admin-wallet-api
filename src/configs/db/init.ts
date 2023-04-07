@@ -1,7 +1,7 @@
 
 import Otp from "../../models/otp-model";
 import Admin from "../../models/admin-model";
-import CountryModel from "../../models/country-model";
+import CountryModel from "../../models/country-model";``
 import MessageTemplateModel from "../../models/message-template-model";
 import config from "../config";
 import StateModel from "../../models/state-model";
