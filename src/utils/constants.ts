@@ -40,6 +40,19 @@ class Constants {
       DEVICE: 'device_lock'
    }
 
+
+   static WALLET = {
+      TYPE_POOL: 'pool',
+      TYPE_WALLET: 'type_wallet'
+   }
+
+
+   static TRANSACTION = {
+      TYPE_DEBIT: 'credit',
+      TYPE_CREDIT: 'debit',
+      STATUS_SUCCESS: 'success',
+      STATUS_FAILED: 'failed'
+   }
 }
 
 export default Constants
