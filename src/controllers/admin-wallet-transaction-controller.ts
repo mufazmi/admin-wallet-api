@@ -15,16 +15,26 @@ class AdminWalletTransactionController {
     create = async (req: Request, res: Response, next: NextFunction) => {
         //@ts-ignore
         const { id } = req.admin;
-        const body:InferCreationAttributes<AdminWalletTransactionModel> = await adminWalletTransactionValidation.create.validateAsync(req.body);
+        const body: InferCreationAttributes<AdminWalletTransactionModel> = await adminWalletTransactionValidation.create.validateAsync(req.body);
         body.created_by = id;
         const wallet = await adminWalletService.findOne({});
-        if(!wallet)``
+        if (!wallet)
             return next(ErrorHandler.notFound(Constants.WALLET.WALLET_NOT_FOUND))
-        if(body.type === Constants.WALLET.TYPE_POOL && body.transaction_type == Constants.TRANSACTION.TYPE_CREDIT){
+
+        // if(body.transaction_type != Constants.TRANSACTION.TYPE_CREDIT))
+        //     return next(ErrorHandler.forbidden(Constants.TRANSACTION.TYPE_NOT_CREDIT)
+
+        if (body.type === Constants.WALLET.TYPE_POOL) {
+            if (body.transaction_type != Constants.TRANSACTION.TYPE_CREDIT)
+                return next(ErrorHandler.forbidden(Constants.TRANSACTION.TYPE_NOT_CREDIT))
             
+            const data = await adminWalletTransactionService.create(body);
+        } else if (body.type === Constants.WALLET.TYPE_WALLET) {
+
+            const data = await adminWalletTransactionService.create(body);
         }
 
-        const data = await adminWalletTransactionService.create(body);
+        const data = '';
         return data ? responseSuccess({ res: res, message: Messages.WALLET.WALLET_TRANSACTION_CREATED }) : next(ErrorHandler.serverError(Messages.WALLET.WALLET_TRANSACTION_CREATION_FAILED));
     }
 
@@ -43,10 +53,10 @@ class AdminWalletTransactionController {
     update = async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
         //@ts-ignore
-        const {admin} = req
+        const { admin } = req
         const body = await adminWalletTransactionValidation.update.validateAsync(req.body);
         body.updated_by = admin.id;
-        const template = await adminWalletTransactionService.find({ id });
+        const template = await adminWalletTransactionService.findOne({ id });
         if (!template)
             return next(ErrorHandler.notFound(Messages.WALLET.WALLET_TRANSACTION_NOT_FOUND))
 

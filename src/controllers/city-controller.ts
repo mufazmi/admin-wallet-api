@@ -29,7 +29,7 @@ class CityController {
     update = async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
         const body = await cityValidation.update.validateAsync(req.body);
-        const template = await cityService.find({ id });
+        const template = await cityService.findOne({ id });
         if (!template)
             return next(ErrorHandler.notFound(Messages.CITY.CITY_NOT_FOUND))
 

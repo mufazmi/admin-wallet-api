@@ -1,5 +1,6 @@
+import { InferCreationAttributes } from "sequelize";
+import AdminWalletModel from "../models/admin-wallet";
 import AdminWalletTransaction from "../models/admin-wallet-transaction-model"
-import { InferCreationAttributes, InferAttributes } from 'sequelize';
 
 class AdminWalletTransactionService{
 
@@ -12,6 +13,7 @@ class AdminWalletTransactionService{
     update = async (filter:any,data:any) => await AdminWalletTransaction.update(data,{where:filter});
 
     destroy = async (filter:any) => await AdminWalletTransaction.destroy({where:filter});
+
     
 }
 

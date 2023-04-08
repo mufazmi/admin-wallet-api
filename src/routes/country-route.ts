@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/',am(countryController.create))
 router.get('/',am(countryController.findAll))
-router.get('/:id',am(countryController.find))
+router.get('/:id',am(countryController.findOne))
 router.patch('/:id',am(countryController.update))
 router.delete('/:id',am(countryController.destroy))
 

@@ -30,7 +30,7 @@ class MessageTemplateController {
     update = async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
         const body = await otpTemplateValidation.update.validateAsync(req.body);
-        const template = await messageTemplateService.find({ id });
+        const template = await messageTemplateService.findOne({ id });
         if (!template)
             return next(ErrorHandler.notFound(Messages.MESSAGE.TEMPLATE_MESSAGE_NOT_FOUND))
 

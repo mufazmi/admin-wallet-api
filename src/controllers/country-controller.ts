@@ -29,7 +29,7 @@ class CountryController {
     update = async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
         const body = await countryValidation.update.validateAsync(req.body);
-        const template = await countryService.find({ id });
+        const template = await countryService.findOne({ id });
         if (!template)
             return next(ErrorHandler.notFound(Messages.COUNTRY.COUNTRY_NOT_FOUND))
 

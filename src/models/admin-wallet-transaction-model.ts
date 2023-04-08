@@ -10,6 +10,7 @@ class AdminWalletTransactionModel extends Model<InferAttributes<AdminWalletTrans
     declare transaction_type: string
     declare transaction: string
     declare amount: number
+    declare opening_balance: number
     declare closing_balance: number
     declare remark: string
     declare status: string
@@ -25,7 +26,7 @@ AdminWalletTransactionModel.init({
         allowNull: false
     },
     order: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.STRING,
         allowNull: false
     },
     type: {
@@ -43,6 +44,10 @@ AdminWalletTransactionModel.init({
         allowNull: false
     },
     amount: {
+        type: DataTypes.FLOAT,
+        allowNull: false
+    },
+    opening_balance: {
         type: DataTypes.FLOAT,
         allowNull: false
     },

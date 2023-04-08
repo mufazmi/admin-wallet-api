@@ -29,7 +29,7 @@ class StateController {
     update = async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
         const body = await stateValidation.update.validateAsync(req.body);
-        const template = await stateService.find({ id });
+        const template = await stateService.findOne({ id });
         if (!template)
             return next(ErrorHandler.notFound(Messages.STATE.STATE_NOT_FOUND))
 
