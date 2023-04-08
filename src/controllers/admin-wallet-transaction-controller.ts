@@ -6,8 +6,9 @@ import Messages from '../utils/messages';
 import adminWalletTransactionService from "../services/admin-wallet-transaction-service";
 import adminWalletService from "../services/admin-wallet-service";
 import Constants from "../utils/constants";
-import { InferCreationAttributes } from "sequelize";
+import { InferAttributes, InferCreationAttributes } from "sequelize";
 import AdminWalletTransactionModel from "../models/admin-wallet-transaction-model";
+import AdminWalletModel from "../models/admin-wallet";
 
 
 class AdminWalletTransactionController {
@@ -17,7 +18,7 @@ class AdminWalletTransactionController {
         const { id } = req.admin;
         const body: InferCreationAttributes<AdminWalletTransactionModel> = await adminWalletTransactionValidation.create.validateAsync(req.body);
         body.created_by = id;
-        const wallet = await adminWalletService.findOne({});
+        const wallet: InferAttributes<AdminWalletModel> | null = await adminWalletService.findOne({});
         if (!wallet)
             return next(ErrorHandler.notFound(Constants.WALLET.WALLET_NOT_FOUND))
 
@@ -25,23 +26,28 @@ class AdminWalletTransactionController {
         //     return next(ErrorHandler.forbidden(Constants.TRANSACTION.TYPE_NOT_CREDIT)
 
         if (body.type === Constants.WALLET.TYPE_POOL) {
+
             if (body.transaction_type != Constants.TRANSACTION.TYPE_CREDIT)
                 return next(ErrorHandler.forbidden(Constants.TRANSACTION.TYPE_NOT_CREDIT))
 
-            const data = await adminWalletTransactionService.create(body);
+            body.opening_balance = wallet.pool_account
+            body.closing_balance = wallet.pool_account + body.amount
+            body.status = Constants.TRANSACTION.STATUS_SUCCESS
+            const data: InferAttributes<AdminWalletTransactionModel> = await adminWalletTransactionService.create(body);
 
-            if(data)
-            {
-               const response = await adminWalletService.updateAccountBalance({
-                    data:wallet,
-                    amount:body.amount,
-                    type:'CREDIT'
-                });
+            if (!data)
+                return next(ErrorHandler.serverError(Constants.TRANSACTION.CREATION_FAILED))
 
-                // if(!response)
-                //     await adminWalletService.destroy({id:response.id})
-            }
-            
+            const response = await adminWalletService.updateAccountBalance({
+                data: wallet,
+                amount: body.amount,
+                type: 'credit'
+            });
+
+            if (!response)
+                await adminWalletService.destroy({ id: data.id })
+
+
         } else if (body.type === Constants.WALLET.TYPE_WALLET) {
 
             const data = await adminWalletTransactionService.create(body);

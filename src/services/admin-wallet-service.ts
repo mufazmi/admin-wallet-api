@@ -11,9 +11,9 @@ enum type {
 }
 
 interface iUpdateAccountBalance {
-    data: InferCreationAttributes<AdminWalletModel>,
+    data: InferAttributes<AdminWalletModel>,
     amount: number,
-    type: 'DEBIT' | 'CREDIT'
+    type: 'credit' | 'debit '
 }
 
 class AdminWalletService {
@@ -30,14 +30,17 @@ class AdminWalletService {
 
 
     updateAccountBalance = async (payload: iUpdateAccountBalance) => {
+        let data = null;
+        
         if (payload.type === Constants.TRANSACTION.TYPE_CREDIT) {
-            console.log("credit")
+            let finalAmout = payload.data.pool_account + payload.amount
+            data = await this.update({},{pool_account:finalAmout})
         } else if (payload.type === Constants.TRANSACTION.TYPE_DEBIT) {
             console.log("debit")
         }else{
             console.log('nottihng')
         }
-        return false;
+        return data;
     }
 
 }

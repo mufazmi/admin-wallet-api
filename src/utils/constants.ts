@@ -49,8 +49,9 @@ class Constants {
 
 
    static TRANSACTION = {
-      TYPE_DEBIT: 'credit',
-      TYPE_CREDIT: 'debit',
+      CREATION_FAILED : 'Failed To Create This Transaction',
+      TYPE_DEBIT: 'debit',
+      TYPE_CREDIT: 'credit',
       TYPE_NOT_CREDIT : 'Not A Credit Transaction',
       TYPE_NOT_DEBIT : 'Not A Debit Transaction',
       STATUS_SUCCESS: 'success',
