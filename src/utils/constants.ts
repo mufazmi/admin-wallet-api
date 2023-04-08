@@ -43,7 +43,7 @@ class Constants {
 
    static WALLET = {
       TYPE_POOL: 'pool',
-      TYPE_WALLET: 'type_wallet',
+      TYPE_WALLET: 'wallet',
       WALLET_NOT_FOUND : 'No Wallet Found'
    }
 

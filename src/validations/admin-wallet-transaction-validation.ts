@@ -17,9 +17,8 @@ class AdminWalletTransactionValidation {
         type : Joi.string().valid(Constants.WALLET.TYPE_POOL,Constants.WALLET.TYPE_WALLET).required(),
         transaction_type : Joi.string().valid(Constants.TRANSACTION.TYPE_CREDIT,Constants.TRANSACTION.TYPE_DEBIT).required(),
         transaction : Joi.string().min(2).max(255).required(),
-        amount : Joi.string().min(2).max(10).required(),
-        closing_balance : Joi.string().min(2).max(10).required(),
-        remark : Joi.string().min(2).max(10).required(),
+        amount : Joi.number().min(1).required(),
+        remark : Joi.string().min(2).max(250).required(),
         status: Joi.boolean().default(true)
     });
 

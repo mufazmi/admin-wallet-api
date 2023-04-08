@@ -5,34 +5,41 @@ import AdminWalletModel from "../models/admin-wallet";
 
 // const type = Constants.TRANSACTION.TYPE_CREDIT | Constants.TRANSACTION.TYPE_DEBIT
 
-enum type  {
+enum type {
     DEBIT = 'DEBIT',
     CREDIT = 'CREDIT'
 }
 
 interface iUpdateAccountBalance {
-    data : InferCreationAttributes<AdminWalletModel>,
-    amount : number,
-    type :  type
+    data: InferCreationAttributes<AdminWalletModel>,
+    amount: number,
+    type: 'DEBIT' | 'CREDIT'
 }
 
-class AdminWalletService{
+class AdminWalletService {
 
-    create = async (data:InferCreationAttributes<AdminWallet>) => await AdminWallet.create(data);
+    create = async (data: InferCreationAttributes<AdminWallet>) => await AdminWallet.create(data);
 
-    findOne = async (filter:any) => await AdminWallet.findOne({where:filter});
+    findOne = async (filter: any) => await AdminWallet.findOne({ where: filter });
 
-    findAll = async (filter:any) => await AdminWallet.findAll({where:filter});
+    findAll = async (filter: any) => await AdminWallet.findAll({ where: filter });
 
-    update = async (filter:any,data:any) => await AdminWallet.update(data,{where:filter});
+    update = async (filter: any, data: any) => await AdminWallet.update(data, { where: filter });
 
-    destroy = async (filter:any) => await AdminWallet.destroy({where:filter});
+    destroy = async (filter: any) => await AdminWallet.destroy({ where: filter });
 
-    
-    updateAccountBalance = async (payload:iUpdateAccountBalance) =>{
-        
+
+    updateAccountBalance = async (payload: iUpdateAccountBalance) => {
+        if (payload.type === Constants.TRANSACTION.TYPE_CREDIT) {
+            console.log("credit")
+        } else if (payload.type === Constants.TRANSACTION.TYPE_DEBIT) {
+            console.log("debit")
+        }else{
+            console.log('nottihng')
+        }
+        return false;
     }
-    
+
 }
 
 export default new AdminWalletService

@@ -27,8 +27,21 @@ class AdminWalletTransactionController {
         if (body.type === Constants.WALLET.TYPE_POOL) {
             if (body.transaction_type != Constants.TRANSACTION.TYPE_CREDIT)
                 return next(ErrorHandler.forbidden(Constants.TRANSACTION.TYPE_NOT_CREDIT))
-            
+
             const data = await adminWalletTransactionService.create(body);
+
+            if(data)
+            {
+               const response = await adminWalletService.updateAccountBalance({
+                    data:wallet,
+                    amount:body.amount,
+                    type:'CREDIT'
+                });
+
+                // if(!response)
+                //     await adminWalletService.destroy({id:response.id})
+            }
+            
         } else if (body.type === Constants.WALLET.TYPE_WALLET) {
 
             const data = await adminWalletTransactionService.create(body);
