@@ -43,15 +43,19 @@ class Constants {
 
    static WALLET = {
       TYPE_POOL: 'pool',
-      TYPE_WALLET: 'type_wallet'
+      TYPE_WALLET: 'type_wallet',
+      WALLET_NOT_FOUND : 'No Wallet Found'
    }
 
 
    static TRANSACTION = {
       TYPE_DEBIT: 'credit',
       TYPE_CREDIT: 'debit',
+      TYPE_NOT_CREDIT : 'Not A Credit Transaction',
+      TYPE_NOT_DEBIT : 'Not A Debit Transaction',
       STATUS_SUCCESS: 'success',
-      STATUS_FAILED: 'failed'
+      STATUS_FAILED: 'failed',
+      
    }
 }
 

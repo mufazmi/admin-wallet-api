@@ -1,15 +1,14 @@
 import { Model, InferAttributes, InferCreationAttributes, DataTypes, CreationOptional } from 'sequelize';
 import db from "../configs/db/db";
-import StateModel from './state-model';
 
-class AdminModel extends Model<InferAttributes<AdminModel>,InferCreationAttributes<AdminModel>> {
+class AdminWalletModel extends Model<InferAttributes<AdminWalletModel>,InferCreationAttributes<AdminWalletModel>> {
     declare id:CreationOptional<string>
     declare wallet:number
-    declare poolAccount:number
+    declare pool_account:number
     declare status:boolean
 }
 
-AdminModel.init({
+AdminWalletModel.init({
     id:{
         type:DataTypes.UUID,
         defaultValue:DataTypes.UUIDV4,
@@ -20,7 +19,7 @@ AdminModel.init({
         type:DataTypes.FLOAT,
         allowNull:false
     },
-    poolAccount:{
+    pool_account:{
         type:DataTypes.FLOAT,
         allowNull:false
     },
@@ -36,4 +35,4 @@ AdminModel.init({
     sequelize:db
 });
 
-export default AdminModel
+export default AdminWalletModel

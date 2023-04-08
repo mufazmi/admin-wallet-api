@@ -4,7 +4,7 @@ class CountryService{
 
     create = async (data:InferCreationAttributes<Country>) => await Country.create(data);
 
-    find = async (filter:any) => await Country.findOne({where:filter});
+    findOne = async (filter:any) => await Country.findOne({where:filter});
 
     findAll = async (filter:any) => await Country.findAll({where:filter});
 

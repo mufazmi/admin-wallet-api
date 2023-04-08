@@ -56,6 +56,19 @@ class Messages {
         CITY_DELETE_FAILED: 'Failed To Delete City'
     }
 
+    
+    static WALLET = {
+        WALLET_TRANSACTION_CREATED: 'Wallet Transaction Created Successfully',
+        WALLET_TRANSACTION_CREATION_FAILED: 'Failed To Create Wallet Transaction',
+        WALLET_TRANSACTION_FOUND: 'Wallet Transaction Found',
+        WALLET_TRANSACTION_NOT_FOUND: 'No Wallet Transaction Found',
+        WALLET_TRANSACTION_UPDATED: 'Wallet Transaction Updated',
+        WALLET_TRANSACTION_UPDATE_FAILED: 'Failed To Updated Wallet Transaction',
+        WALLET_TRANSACTION_DELATED: 'Wallet Transaction Deleted',
+        WALLET_TRANSACTION_DELETE_FAILED: 'Failed To Delete Wallet Transaction'
+    }
+
+
     static NOTIFICATION = {
         NOTIFICATION_TOKEN_CREATED: 'Notification Token Created Successfully',
         NOTIFICATION_TOKEN_CREATION_FAILED: 'Failed To Create Notification Token',

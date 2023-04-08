@@ -1,6 +1,7 @@
-import { Model, InferAttributes, InferCreationAttributes, DataTypes, CreationOptional } from 'sequelize';
+import { Model, InferAttributes, InferCreationAttributes, DataTypes, CreationOptional, ForeignKey } from 'sequelize';
 import db from "../configs/db/db";
 import Constants from '../utils/constants';
+import Admin from './admin-model';
 
 class AdminWalletTransactionModel extends Model<InferAttributes<AdminWalletTransactionModel>, InferCreationAttributes<AdminWalletTransactionModel>> {
     declare id: CreationOptional<string>
@@ -12,7 +13,8 @@ class AdminWalletTransactionModel extends Model<InferAttributes<AdminWalletTrans
     declare closing_balance: number
     declare remark: string
     declare status: string
-
+    declare created_by : ForeignKey<Admin['id']>
+    declare updated_by : ForeignKey<Admin['id']>
 }
 
 AdminWalletTransactionModel.init({

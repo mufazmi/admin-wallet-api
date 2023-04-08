@@ -14,7 +14,7 @@ class CityController {
         return data ? responseSuccess({ res: res, message: Messages.CITY.CITY_CREATED }) : next(ErrorHandler.serverError(Messages.CITY.CITY_CREATION_FAILED));
     }
 
-    find = async (req: Request, res: Response, next: NextFunction) => {
+    findOne = async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
         const data = await cityService.findAll({ id });
         return data ? responseSuccess({ res: res, message: Messages.CITY.CITY_FOUND, data: data }) : next(ErrorHandler.notFound(Messages.CITY.CITY_NOT_FOUND));

@@ -14,7 +14,7 @@ class CountryController {
         return data ? responseSuccess({ res: res, message: Messages.COUNTRY.COUNTRY_CREATED }) : next(ErrorHandler.serverError(Messages.COUNTRY.COUNTRY_CREATION_FAILED));
     }
 
-    find = async (req: Request, res: Response, next: NextFunction) => {
+    findOne = async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
         const data = await countryService.findAll({ id });
         return data ? responseSuccess({ res: res, message: Messages.COUNTRY.COUNTRY_FOUND, data: data }) : next(ErrorHandler.notFound(Messages.COUNTRY.COUNTRY_NOT_FOUND));

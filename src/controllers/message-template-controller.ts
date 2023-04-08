@@ -15,7 +15,7 @@ class MessageTemplateController {
         return data ? responseSuccess({ res: res, message: Messages.MESSAGE.TEMPLATE_MESSAGE_CREATED }) : next(ErrorHandler.serverError(Messages.MESSAGE.TEMPLATE_MESSAGE_CREATION_FAILED));
     }
 
-    find = async (req: Request, res: Response, next: NextFunction) => {
+    findOne = async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
         const data = await messageTemplateService.findAll({ id });
         return data ? responseSuccess({ res: res, message: Messages.MESSAGE.TEMPLATE_MESSAGE_FOUND, data: data }) : next(ErrorHandler.notFound(Messages.MESSAGE.TEMPLATE_MESSAGE_NOT_FOUND));

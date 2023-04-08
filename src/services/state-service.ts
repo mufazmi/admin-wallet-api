@@ -4,7 +4,7 @@ class StateService{
 
     create = async (data:InferCreationAttributes<State>) => await State.create(data);
 
-    find = async (filter:any) => await State.findOne({where:filter});
+    findOne = async (filter:any) => await State.findOne({where:filter});
 
     findAll = async (filter:any) => await State.findAll({where:filter});
 

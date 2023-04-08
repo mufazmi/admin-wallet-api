@@ -5,7 +5,7 @@ class NotificationTokenService{
 
     create = async (data:InferCreationAttributes<NotificationToken>) => await NotificationToken.create(data);
 
-    find = async (filter:any) => await NotificationToken.findOne({where:filter});
+    findOne = async (filter:any) => await NotificationToken.findOne({where:filter});
 
     findAll = async (filter:any) => await NotificationToken.findAll({where:filter});
 

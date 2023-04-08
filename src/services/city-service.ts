@@ -4,7 +4,7 @@ class CityService{
 
     create = async (data:InferCreationAttributes<City>) => await City.create(data);
 
-    find = async (filter:any) => await City.findOne({where:filter});
+    findOne = async (filter:any) => await City.findOne({where:filter});
 
     findAll = async (filter:any) => await City.findAll({where:filter});
 

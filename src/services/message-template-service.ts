@@ -4,7 +4,7 @@ class MessageTemplateService{
 
     create = async (data:InferCreationAttributes<MessageTemplate>) => await MessageTemplate.create(data);
 
-    find = async (filter:any) => await MessageTemplate.findOne({where:filter});
+    findOne = async (filter:any) => await MessageTemplate.findOne({where:filter});
 
     findAll = async (filter:any) => await MessageTemplate.findAll({where:filter});
 
