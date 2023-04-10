@@ -5,7 +5,7 @@ import Admin from './admin-model';
 
 class AdminWalletTransactionModel extends Model<InferAttributes<AdminWalletTransactionModel>, InferCreationAttributes<AdminWalletTransactionModel>> {
     declare id: CreationOptional<string>
-    declare order: number
+    // declare order: number
     declare type: string
     declare transaction_type: string
     declare transaction: string
@@ -25,10 +25,10 @@ AdminWalletTransactionModel.init({
         primaryKey: true,
         allowNull: false
     },
-    order: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
+    // order: {
+    //     type: DataTypes.STRING,
+    //     allowNull: false
+    // },
     type: {
         type: DataTypes.ENUM,
         values: [Constants.WALLET.TYPE_POOL, Constants.WALLET.TYPE_WALLET],
@@ -41,7 +41,7 @@ AdminWalletTransactionModel.init({
     },
     transaction: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     amount: {
         type: DataTypes.FLOAT,

@@ -2,7 +2,8 @@ import express from 'express';
 const router = express.Router();
 
 
-import authRoute from '../routes/auth-route';
+import adminAuthRoute from '../routes/auth/admin'
+import merchantAuthRoute from '../routes/auth/merchant'
 import messageTemplateRoute from '../routes/message-template-route';
 import adminWalletTransactionRoute from '../routes/admin-wallet-transaction-route';
 
@@ -13,7 +14,8 @@ import notificationRoute from '../routes/notification-route';
 import auth from '../middlewares/auth-middleware';
 
 
-router.use('/auth', authRoute);
+router.use('/auth/admin', adminAuthRoute);
+router.use('/auth/merchant', merchantAuthRoute);
 router.use('/message/template', messageTemplateRoute);
 router.use('/country', countryRoute);
 router.use('/admin/wallet/transaction',auth,adminWalletTransactionRoute)

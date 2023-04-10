@@ -22,6 +22,15 @@ class AdminWalletTransactionValidation {
         status: Joi.boolean().default(true)
     });
 
+    createDepositPurchase = Joi.object({
+        
+        transaction_type : Joi.string().valid(Constants.TRANSACTION.TYPE_DEPOSIT,Constants.TRANSACTION.TYPE_PURCHASE).required(),
+        transaction : Joi.string().min(2).max(255).optional(),
+        amount : Joi.number().min(1).required(),
+        remark : Joi.string().min(2).max(250).required(),
+        status: Joi.boolean().default(true)
+    });
+
     update = Joi.object({        
         name:Joi.string().min(2).max(100).optional(),
         status: Joi.boolean().default(true),

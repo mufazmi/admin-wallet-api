@@ -13,6 +13,65 @@ import AdminWalletModel from "../models/admin-wallet";
 
 class AdminWalletTransactionController {
 
+    createDepositPurchase = async (req: Request, res: Response, next: NextFunction) => {
+        let data: InferAttributes<AdminWalletTransactionModel> | any = null;
+        //@ts-ignore
+        const { id } = req.admin;
+        const body: InferCreationAttributes<AdminWalletTransactionModel> = await adminWalletTransactionValidation.createDepositPurchase.validateAsync(req.body);
+        body.created_by = id;
+        const wallet: InferAttributes<AdminWalletModel> | null = await adminWalletService.findOne({});
+        if (!wallet)
+            return next(ErrorHandler.notFound(Constants.WALLET.WALLET_NOT_FOUND))
+
+        body.opening_balance = wallet.pool_account
+
+        if (body.transaction_type === Constants.TRANSACTION.TYPE_DEPOSIT) {
+
+            body.type = Constants.WALLET.TYPE_POOL
+            body.closing_balance = wallet.pool_account + body.amount
+            body.status = Constants.TRANSACTION.STATUS_SUCCESS
+            body.transaction_type = Constants.TRANSACTION.TYPE_CREDIT
+            data = await adminWalletTransactionService.create(body);
+
+            if (!data)
+                return next(ErrorHandler.serverError(Constants.TRANSACTION.CREATION_FAILED))
+
+            let finalAmout = wallet.pool_account + body.amount
+
+            const isWalletUpdated = await adminWalletService.update({}, { pool_account: finalAmout })
+
+            if (!isWalletUpdated)
+                await adminWalletService.destroy({ id: data.id })
+
+
+        } else if (body.transaction_type === Constants.TRANSACTION.TYPE_PURCHASE) {
+
+            if (wallet.pool_account < body.amount)
+                return next(ErrorHandler.forbidden(Messages.WALLET.WALLET_POOL_INSUFFICIENT_BALANCE));
+
+            body.closing_balance = wallet.pool_account - body.amount
+            body.closing_balance = wallet.wallet + body.amount
+            body.type = Constants.WALLET.TYPE_POOL
+            body.status = Constants.TRANSACTION.STATUS_SUCCESS
+            body.transaction_type = Constants.TRANSACTION.TYPE_DEBIT
+            data = await adminWalletTransactionService.create(body);
+
+            if (!data)
+                return next(ErrorHandler.serverError(Constants.TRANSACTION.CREATION_FAILED))
+
+            let finalAmout = wallet.pool_account - body.amount
+            let walletFinalAmout = wallet.wallet + body.amount
+
+            const isWalletUpdated = await adminWalletService.update({}, { pool_account: finalAmout, wallet: walletFinalAmout })
+
+            if (!isWalletUpdated)
+                await adminWalletService.destroy({ id: data.id })
+        }
+
+        return data ? responseSuccess({ res: res, message: Messages.WALLET.WALLET_TRANSACTION_CREATED }) : next(ErrorHandler.serverError(Messages.WALLET.WALLET_TRANSACTION_CREATION_FAILED));
+    }
+
+
     create = async (req: Request, res: Response, next: NextFunction) => {
         let data: InferAttributes<AdminWalletTransactionModel> | any = null;
         //@ts-ignore
@@ -48,27 +107,45 @@ class AdminWalletTransactionController {
         } else if (body.type === Constants.WALLET.TYPE_WALLET) {
 
             if (body.transaction_type == Constants.TRANSACTION.TYPE_CREDIT) {
-                if (wallet.pool_account >= body.amount) {
-                    body.closing_balance = wallet.pool_account - body.amount
-                    body.closing_balance = wallet.wallet + body.amount
-                    body.status = Constants.TRANSACTION.STATUS_SUCCESS
-                    data = await adminWalletTransactionService.create(body);
-
-                    if (!data)
-                        return next(ErrorHandler.serverError(Constants.TRANSACTION.CREATION_FAILED))
-
-                    let finalAmout = wallet.pool_account - body.amount
-
-                    const isWalletUpdated = await adminWalletService.update({}, { pool_account: finalAmout })
-
-                    if (!isWalletUpdated)
-                        await adminWalletService.destroy({ id: data.id })
-                }
-                else {
+                if (wallet.pool_account < body.amount)
                     return next(ErrorHandler.forbidden(Messages.WALLET.WALLET_INSUFFICIENT_BALANCE));
-                }
+
+                body.closing_balance = wallet.pool_account - body.amount
+                body.closing_balance = wallet.wallet + body.amount
+                body.status = Constants.TRANSACTION.STATUS_SUCCESS
+                data = await adminWalletTransactionService.create(body);
+
+                if (!data)
+                    return next(ErrorHandler.serverError(Constants.TRANSACTION.CREATION_FAILED))
+
+                let finalAmout = wallet.pool_account - body.amount
+
+                const isWalletUpdated = await adminWalletService.update({}, { pool_account: finalAmout })
+
+                if (!isWalletUpdated)
+                    await adminWalletService.destroy({ id: data.id })
+            } else {
+                // if (wallet.pool_account < body.amount)
+                //     return next(ErrorHandler.forbidden(Messages.WALLET.WALLET_INSUFFICIENT_BALANCE));
+
+                body.closing_balance = wallet.pool_account - body.amount
+                body.closing_balance = wallet.wallet + body.amount
+                body.status = Constants.TRANSACTION.STATUS_SUCCESS
+                data = await adminWalletTransactionService.create(body);
+
+                if (!data)
+                    return next(ErrorHandler.serverError(Constants.TRANSACTION.CREATION_FAILED))
+
+                let finalAmout = wallet.pool_account - body.amount
+
+                const isWalletUpdated = await adminWalletService.update({}, { pool_account: finalAmout })
+
+                if (!isWalletUpdated)
+                    await adminWalletService.destroy({ id: data.id })
             }
         }
+
+        console.log(data);
 
         return data ? responseSuccess({ res: res, message: Messages.WALLET.WALLET_TRANSACTION_CREATED }) : next(ErrorHandler.serverError(Messages.WALLET.WALLET_TRANSACTION_CREATION_FAILED));
     }

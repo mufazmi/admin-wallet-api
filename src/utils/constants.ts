@@ -52,6 +52,8 @@ class Constants {
       CREATION_FAILED : 'Failed To Create This Transaction',
       TYPE_DEBIT: 'debit',
       TYPE_CREDIT: 'credit',
+      TYPE_DEPOSIT: 'deposit',
+      TYPE_PURCHASE: 'purchase',
       TYPE_NOT_CREDIT : 'Not A Credit Transaction',
       TYPE_NOT_DEBIT : 'Not A Debit Transaction',
       STATUS_SUCCESS: 'success',
