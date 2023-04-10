@@ -34,6 +34,7 @@ class AdminWalletService {
         
         if (payload.type === Constants.TRANSACTION.TYPE_CREDIT) {
             let finalAmout = payload.data.pool_account + payload.amount
+            
             data = await this.update({},{pool_account:finalAmout})
         } else if (payload.type === Constants.TRANSACTION.TYPE_DEBIT) {
             console.log("debit")

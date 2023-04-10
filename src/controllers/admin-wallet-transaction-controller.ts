@@ -22,15 +22,13 @@ class AdminWalletTransactionController {
         if (!wallet)
             return next(ErrorHandler.notFound(Constants.WALLET.WALLET_NOT_FOUND))
 
-        // if(body.transaction_type != Constants.TRANSACTION.TYPE_CREDIT))
-        //     return next(ErrorHandler.forbidden(Constants.TRANSACTION.TYPE_NOT_CREDIT)
+        body.opening_balance = wallet.pool_account
 
         if (body.type === Constants.WALLET.TYPE_POOL) {
 
             if (body.transaction_type != Constants.TRANSACTION.TYPE_CREDIT)
                 return next(ErrorHandler.forbidden(Constants.TRANSACTION.TYPE_NOT_CREDIT))
 
-            body.opening_balance = wallet.pool_account
             body.closing_balance = wallet.pool_account + body.amount
             body.status = Constants.TRANSACTION.STATUS_SUCCESS
             const data: InferAttributes<AdminWalletTransactionModel> = await adminWalletTransactionService.create(body);
@@ -50,6 +48,28 @@ class AdminWalletTransactionController {
 
         } else if (body.type === Constants.WALLET.TYPE_WALLET) {
 
+            if (body.transaction_type == Constants.TRANSACTION.TYPE_CREDIT) {
+                if (wallet.pool_account >= body.amount) {
+                    body.closing_balance = wallet.pool_account - body.amount
+                    body.closing_balance = wallet.wallet + body.amount
+                    body.status = Constants.TRANSACTION.STATUS_SUCCESS
+                    const data: InferAttributes<AdminWalletTransactionModel> = await adminWalletTransactionService.create(body);
+
+                    if (!data)
+                        return next(ErrorHandler.serverError(Constants.TRANSACTION.CREATION_FAILED))
+
+                    const response = await adminWalletService.updateAccountBalance({
+                        data: wallet,
+                        amount: body.amount,
+                        type: 'credit'
+                    });
+
+                    if (!response)
+                        await adminWalletService.destroy({ id: data.id })
+
+
+                }
+            }
             const data = await adminWalletTransactionService.create(body);
         }
 
