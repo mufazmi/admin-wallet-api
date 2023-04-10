@@ -14,6 +14,7 @@ import AdminWalletModel from "../models/admin-wallet";
 class AdminWalletTransactionController {
 
     create = async (req: Request, res: Response, next: NextFunction) => {
+        let data: InferAttributes<AdminWalletTransactionModel> | any = null;
         //@ts-ignore
         const { id } = req.admin;
         const body: InferCreationAttributes<AdminWalletTransactionModel> = await adminWalletTransactionValidation.create.validateAsync(req.body);
@@ -31,18 +32,16 @@ class AdminWalletTransactionController {
 
             body.closing_balance = wallet.pool_account + body.amount
             body.status = Constants.TRANSACTION.STATUS_SUCCESS
-            const data: InferAttributes<AdminWalletTransactionModel> = await adminWalletTransactionService.create(body);
+            data = await adminWalletTransactionService.create(body);
 
             if (!data)
                 return next(ErrorHandler.serverError(Constants.TRANSACTION.CREATION_FAILED))
 
-            const response = await adminWalletService.updateAccountBalance({
-                data: wallet,
-                amount: body.amount,
-                type: 'credit'
-            });
+            let finalAmout = wallet.pool_account + body.amount
 
-            if (!response)
+            const isWalletUpdated = await adminWalletService.update({}, { pool_account: finalAmout })
+
+            if (!isWalletUpdated)
                 await adminWalletService.destroy({ id: data.id })
 
 
@@ -53,27 +52,24 @@ class AdminWalletTransactionController {
                     body.closing_balance = wallet.pool_account - body.amount
                     body.closing_balance = wallet.wallet + body.amount
                     body.status = Constants.TRANSACTION.STATUS_SUCCESS
-                    const data: InferAttributes<AdminWalletTransactionModel> = await adminWalletTransactionService.create(body);
+                    data = await adminWalletTransactionService.create(body);
 
                     if (!data)
                         return next(ErrorHandler.serverError(Constants.TRANSACTION.CREATION_FAILED))
 
-                    const response = await adminWalletService.updateAccountBalance({
-                        data: wallet,
-                        amount: body.amount,
-                        type: 'credit'
-                    });
+                    let finalAmout = wallet.pool_account - body.amount
 
-                    if (!response)
+                    const isWalletUpdated = await adminWalletService.update({}, { pool_account: finalAmout })
+
+                    if (!isWalletUpdated)
                         await adminWalletService.destroy({ id: data.id })
-
-
+                }
+                else {
+                    return next(ErrorHandler.forbidden(Messages.WALLET.WALLET_INSUFFICIENT_BALANCE));
                 }
             }
-            const data = await adminWalletTransactionService.create(body);
         }
 
-        const data = '';
         return data ? responseSuccess({ res: res, message: Messages.WALLET.WALLET_TRANSACTION_CREATED }) : next(ErrorHandler.serverError(Messages.WALLET.WALLET_TRANSACTION_CREATION_FAILED));
     }
 

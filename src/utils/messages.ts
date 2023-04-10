@@ -56,8 +56,10 @@ class Messages {
         CITY_DELETE_FAILED: 'Failed To Delete City'
     }
 
-    
+
     static WALLET = {
+        WALLET_INSUFFICIENT_BALANCE: 'Insufficient Balance',
+        WALLET_POOL_INSUFFICIENT_BALANCE: 'Insufficient Balance In Your Pool Account',
         WALLET_TRANSACTION_CREATED: 'Wallet Transaction Created Successfully',
         WALLET_TRANSACTION_CREATION_FAILED: 'Failed To Create Wallet Transaction',
         WALLET_TRANSACTION_FOUND: 'Wallet Transaction Found',
