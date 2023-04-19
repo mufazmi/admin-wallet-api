@@ -9,7 +9,7 @@ dotenv.config()
 import dbInit from './configs/db/init';
 
 //DB Init
-// dbInit();
+dbInit();
 const PORT:Number = Number(process.env.PORT || 3000)
 
 const app:Application = express()

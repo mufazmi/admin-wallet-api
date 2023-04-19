@@ -1,6 +1,6 @@
 import express from 'express';
-import authController from '../../controllers/auth-controller';
-const am = require('../../middlewares/async-middleware');
+import authController from '../controllers/auth-controller';
+const am = require('../middlewares/async-middleware');
 
 const router = express.Router();
 

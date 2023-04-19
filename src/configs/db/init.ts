@@ -11,6 +11,7 @@ import Merchant from "../../models/merchant-model";
 import TokenModel from "../../models/token-model";
 import AdminWalletModel from "../../models/admin-wallet";
 import AdminWalletTransactionModel from "../../models/admin-wallet-transaction-model";
+import MerchantWalletModel from "../../models/merchant-wallet";
 require('./db')
 
 const isDev = config.APP_ENV === 'development'
@@ -28,6 +29,7 @@ const dbInit = async () =>{
     // await Merchant.sync({alter:isDev})
     await AdminWalletModel.sync({alter:isDev})
     await AdminWalletTransactionModel.sync({alter:isDev})
+    await MerchantWalletModel.sync({alter:isDev})
 }
 
 export default dbInit

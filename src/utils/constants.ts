@@ -7,6 +7,11 @@ class Constants {
       ROLE_OPERATOR: 'Operator'
    }
 
+   static USER = {
+      TYPE_ADMIN : 'admin',
+      TYPE_MERCHANT : 'merchant'
+   }
+
    static SERVER_MESSAGE = {
       NOT_FOUND: "Oops..! It's 404",
       FORBIDDEN: "Oops..! It's 403",
