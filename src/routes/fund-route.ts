@@ -1,10 +1,12 @@
 import express from 'express';
-import merchantFundController from '../controllers/fund-controller';
+import fundController from '../controllers/fund-controller';
 const am = require('../middlewares/async-middleware');
 
 const router = express.Router();
 
-router.get('/',am(merchantFundController.findAll))
-router.get('/:id',am(merchantFundController.findOne))
+router.get('/',am(fundController.findAll))
+router.get('/:status',am(fundController.findAll))
+router.get('/:id',am(fundController.findOne))
+router.get('/:action/:id',am(fundController.approve))
 
 export default router;

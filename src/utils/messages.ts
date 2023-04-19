@@ -89,6 +89,10 @@ class Messages {
         FUND_MERCHANT_DELETE_FAILED: 'Failed To Delete Merchant Fund'
     }
 
+    static FUND = {
+        NOT_FOUND : 'No Fund Found'
+    }
+
 
 }
 
