@@ -7,6 +7,6 @@ const router = express.Router();
 router.get('/',am(fundController.findAll))
 router.get('/:status',am(fundController.findAll))
 router.get('/:id',am(fundController.findOne))
-router.get('/:action/:id',am(fundController.approve))
+router.post('/:id',am(fundController.approve))
 
 export default router;
