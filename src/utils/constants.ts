@@ -6,6 +6,15 @@ class Constants {
       ROLE_TECHNICAL: 'Technical',
       ROLE_OPERATOR: 'Operator'
    }
+   
+   static STATUS = {
+      ENABLE: 'enable',
+      DISABLE: 'disable',
+      FREEZ:'freez',
+      APPROVED:'approved',
+      PENDING:'pending',
+      REJECTED:'rejected',
+   }
 
    static USER = {
       TYPE_ADMIN : 'admin',
