@@ -34,6 +34,17 @@ class Messages {
         COUNTRY_DELETE_FAILED: 'Failed To Delete Country'
     }
 
+    static NAVIGATION = {
+        NAVIGATION_CREATED: 'Navigation Created Successfully',
+        NAVIGATION_CREATION_FAILED: 'Failed To Create Navigation',
+        NAVIGATION_FOUND: 'Navigation Found',
+        NAVIGATION_NOT_FOUND: 'No Navigation Found',
+        NAVIGATION_UPDATED: 'Navigation Updated',
+        NAVIGATION_UPDATE_FAILED: 'Failed To Updated Navigation',
+        NAVIGATION_DELATED: 'Navigation Deleted',
+        NAVIGATION_DELETE_FAILED: 'Failed To Delete Navigation'
+    }
+
     static STATE = {
         STATE_CREATED: 'State Created Successfully',
         STATE_CREATION_FAILED: 'Failed To Create State',
@@ -56,7 +67,6 @@ class Messages {
         CITY_DELETE_FAILED: 'Failed To Delete City'
     }
 
-
     static WALLET = {
         WALLET_INSUFFICIENT_BALANCE: 'Insufficient Balance',
         WALLET_POOL_INSUFFICIENT_BALANCE: 'Insufficient Balance In Your Pool Account',
@@ -69,7 +79,6 @@ class Messages {
         WALLET_TRANSACTION_DELATED: 'Wallet Transaction Deleted',
         WALLET_TRANSACTION_DELETE_FAILED: 'Failed To Delete Wallet Transaction'
     }
-
 
     static NOTIFICATION = {
         NOTIFICATION_TOKEN_CREATED: 'Notification Token Created Successfully',
@@ -90,7 +99,7 @@ class Messages {
     }
 
     static FUND = {
-        NOT_FOUND : 'No Fund Found'
+        NOT_FOUND: 'No Fund Found'
     }
 
 

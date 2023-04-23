@@ -11,6 +11,7 @@ import cityRoute from '../routes/city-route';
 import notificationRoute from '../routes/notification-route';
 import auth from '../middlewares/auth-middleware';
 import fundRoute from './fund-route';
+import navigationRoute from './navigation-route';
 
 
 router.use('/auth', authRoute);
@@ -18,9 +19,10 @@ router.use('/message/template', messageTemplateRoute);
 router.use('/country', countryRoute);
 router.use('/admin/wallet/transaction',auth,adminWalletTransactionRoute)
 router.use('/fund',auth,fundRoute)
-// router.use('/state', stateRoute);
-// router.use('/city', cityRoute);
-// router.use('/notification', notificationRoute);
+router.use('/navigation',auth,navigationRoute)
+router.use('/state', stateRoute);
+router.use('/city', cityRoute);
+router.use('/notification', notificationRoute);
 
 
 

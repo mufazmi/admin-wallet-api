@@ -1,7 +1,6 @@
 
 import { Model, InferAttributes, InferCreationAttributes, DataTypes, CreationOptional, ForeignKey } from 'sequelize';
 import db from "../configs/db/db";
-import Constants from '../utils/constants';
 
 class NavigationModel extends Model<InferAttributes<NavigationModel>, InferCreationAttributes<NavigationModel>> {
     declare id: CreationOptional<string>
