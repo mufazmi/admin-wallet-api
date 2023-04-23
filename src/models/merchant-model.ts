@@ -3,6 +3,11 @@ import db from "../configs/db/db";
 import bcrypt from 'bcrypt';
 import Otp from './otp-model';
 import Constants from '../utils/constants';
+import MerchantWalletModel from './merchant-wallet';
+import BusinessModel from './business-model';
+import MerchantFundModel from './funds';
+import AdminWalletModel from './admin-wallet';
+import KycDocumentModel from './kyc-document-model';
 
 class Merchant extends Model<InferAttributes<Merchant>,InferCreationAttributes<Merchant>>{
 
@@ -104,5 +109,20 @@ Merchant.beforeCreate((user)=>{
 
 
 Merchant.hasMany(Otp,{sourceKey:'id',foreignKey:'merchant_id',as:'otps'});
+
+Merchant.hasMany(Otp,{sourceKey:'id',foreignKey:'merchant_id',as:'otps'});
+
+Merchant.hasOne(MerchantWalletModel,{sourceKey:'id',foreignKey:'merchant_id',as:'wallet'});
+
+Merchant.hasOne(BusinessModel,{sourceKey:'id',foreignKey:'merchant_id',as:'business'});
+
+BusinessModel.belongsTo(Merchant,{foreignKey:'merchant_id',as:'business'});
+
+Merchant.hasMany(MerchantFundModel,{sourceKey:'id',foreignKey:'merchant_id',as:'merchant_fund'});
+
+Merchant.hasMany(AdminWalletModel,{sourceKey:'id',foreignKey:'approved_by',as:'approved_by'});
+
+Merchant.hasOne(KycDocumentModel,{sourceKey:'id',foreignKey:'merchant_id',as:'kys_documents'});
+
 
 export default Merchant
