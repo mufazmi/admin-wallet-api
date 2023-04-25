@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get('/',am(merchantController.findAll))
 router.get('/:id',am(merchantController.findOne))
-router.patch('/:id',am(merchantController.update))
+// router.patch('/:id',am(merchantController.update))
+router.patch('/kyc/:id',am(merchantController.updateKyc))
 
 export default router;

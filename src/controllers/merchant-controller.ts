@@ -35,11 +35,15 @@ class MerchantController {
     //     return data ? responseSuccess({ res: res, message: Messages.MERCHANT.FUND_MERCHANT_FOUND, data: data }) : next(ErrorHandler.notFound(Messages.MERCHANT.FUND_MERCHANT_NOT_FOUND));
     // }
 
-    updateKyc = async (req:AuthRequest,res:Response,next:NextFunction) =>{
-        const {id} = req.params
+    updateKyc = async (req: AuthRequest, res: Response, next: NextFunction) => {
+        const { id } = req.params
         const body = await merchantValidation.updateKycStatus.validateAsync(req.body);
-        const data = await merchantService.update({id},{status:body.status})
-        return data ? responseSuccess({ res: res, message: Messages.KYC.UPDATED, data: data }) : next(ErrorHandler.notFound(Messages.KYC.UPDATE_FAILED));
+        const merchant = await merchantService.findOne({ id });
+        if (!merchant)
+            return next(ErrorHandler.notFound(Messages.MERCHANT.NOT_FOUND))
+        const data = await merchantService.update({ id }, { status: body.status })
+        console.log(data)
+        return data ? responseSuccess({ res: res, message: Messages.KYC.UPDATED }) : next(ErrorHandler.notFound(Messages.KYC.UPDATE_FAILED));
     }
 
 }

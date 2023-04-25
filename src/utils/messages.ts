@@ -93,6 +93,10 @@ class Messages {
     }
 
     static MERCHANT = {
+
+        FOUND: 'Merchant Found',
+        NOT_FOUND: 'No Merchant Found',
+
         FUND_MERCHANT_CREATED: 'Merchant Fund Created Successfully',
         FUND_MERCHANT_CREATION_FAILED: 'Failed To Create Merchant Fund',
         FUND_MERCHANT_FOUND: 'Merchant Fund Found',
