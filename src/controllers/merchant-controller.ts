@@ -6,6 +6,8 @@ import Messages from '../utils/messages';
 import responseSuccess from '../utils/response';
 import merchantService from '../services/merchant-service';
 import { InferAttributes } from 'sequelize';
+import { AuthRequest } from '../interfaces/interface';
+import merchantValidation from '../validations/merchant-validation';
 
 class MerchantController {
 
@@ -27,6 +29,18 @@ class MerchantController {
         return data ? responseSuccess({ res: res, message: Messages.MERCHANT.FUND_MERCHANT_FOUND, data: data }) : next(ErrorHandler.notFound(Messages.MERCHANT.FUND_MERCHANT_NOT_FOUND));
     }
 
+    // update = async (req: Request, res: Response, next: NextFunction) => {
+    //     const { id } = req.params;
+    //     const body = await merchantValidation.update.validateAsync(req.body);
+    //     return data ? responseSuccess({ res: res, message: Messages.MERCHANT.FUND_MERCHANT_FOUND, data: data }) : next(ErrorHandler.notFound(Messages.MERCHANT.FUND_MERCHANT_NOT_FOUND));
+    // }
+
+    updateKyc = async (req:AuthRequest,res:Response,next:NextFunction) =>{
+        const {id} = req.params
+        const body = await merchantValidation.updateKycStatus.validateAsync(req.body);
+        const data = await merchantService.update({id},{status:body.status})
+        return data ? responseSuccess({ res: res, message: Messages.KYC.UPDATED, data: data }) : next(ErrorHandler.notFound(Messages.KYC.UPDATE_FAILED));
+    }
 
 }
 

@@ -1,6 +1,11 @@
 
 class Messages {
 
+    static KYC = {
+        UPDATED: 'Kyc Updated',
+        UPDATE_FAILED: 'Failed to update kyc'
+    }
+
     static AUTH = {
         LOGIN_SUCCESS: 'Login Successfull',
         ACCOUNT_VERIFIED: 'Account Verified',
