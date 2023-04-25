@@ -1,6 +1,9 @@
 
 class Constants {
 
+   static PATH = {
+      KYC_IMAGE : './storage/uploads/kyc/images/'
+   }
    static ADMIN = {
       ROLE_DIRECTOR: 'Director',
       ROLE_TECHNICAL: 'Technical',
@@ -46,8 +49,9 @@ class Constants {
    }
 
    static TYPE = {
-      KYC_PENDING: 'kyc_pending',
-      KYC_SUBMITTED: 'kyc_submitted',
+      PENDING: 'pending',
+      SUBMITTED: 'submitted',
+      REJECTED: 'rejected',
       ACTIVE: 'active',
       SUSPENDED: 'suspended',
    }

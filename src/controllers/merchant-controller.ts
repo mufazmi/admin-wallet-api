@@ -8,6 +8,9 @@ import merchantService from '../services/merchant-service';
 import { InferAttributes } from 'sequelize';
 import { AuthRequest } from '../interfaces/interface';
 import merchantValidation from '../validations/merchant-validation';
+import Constants from '../utils/constants';
+import kycDocumentService from '../services/kyc-document-service';
+import fileHelper from '../helpers/file-helper';
 
 class MerchantController {
 
@@ -29,22 +32,29 @@ class MerchantController {
         return data ? responseSuccess({ res: res, message: Messages.MERCHANT.FUND_MERCHANT_FOUND, data: data }) : next(ErrorHandler.notFound(Messages.MERCHANT.FUND_MERCHANT_NOT_FOUND));
     }
 
-    // update = async (req: Request, res: Response, next: NextFunction) => {
-    //     const { id } = req.params;
-    //     const body = await merchantValidation.update.validateAsync(req.body);
-    //     return data ? responseSuccess({ res: res, message: Messages.MERCHANT.FUND_MERCHANT_FOUND, data: data }) : next(ErrorHandler.notFound(Messages.MERCHANT.FUND_MERCHANT_NOT_FOUND));
-    // }
-
     updateKyc = async (req: AuthRequest, res: Response, next: NextFunction) => {
-        const { id } = req.params
+        const { id } = req.params;
         const body = await merchantValidation.updateKycStatus.validateAsync(req.body);
         const merchant = await merchantService.findOne({ id });
-        if (!merchant)
-            return next(ErrorHandler.notFound(Messages.MERCHANT.NOT_FOUND))
-        const data = await merchantService.update({ id }, { status: body.status })
-        console.log(data)
+        if (!merchant) {
+            return next(ErrorHandler.notFound(Messages.MERCHANT.NOT_FOUND));
+        }
+        const data = await merchantService.update({ id }, { status: body.status });
+        if (data && body.status === Constants.STATUS.REJECTED) {
+            const kycDoc = await kycDocumentService.findOne({ merchat_id: id });
+            if (kycDoc) {
+                const isDestroyed = await kycDoc?.destroy();
+                // if (isDestroyed) {
+                const filesRemoved = fileHelper.removeAll({ base: Constants.PATH.KYC_IMAGE, paths: [kycDoc?.aadhar_back, kycDoc?.aadhar_front, kycDoc?.pan_front, kycDoc?.proof] });
+                if (!filesRemoved) {
+                    console.error('Failed to remove files.');
+                }
+                // }
+            }
+        }
         return data ? responseSuccess({ res: res, message: Messages.KYC.UPDATED }) : next(ErrorHandler.notFound(Messages.KYC.UPDATE_FAILED));
-    }
+    };
+
 
 }
 

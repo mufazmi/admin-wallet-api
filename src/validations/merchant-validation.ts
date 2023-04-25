@@ -8,7 +8,7 @@ class MerchantValidation {
     });
 
     updateKycStatus = Joi.object({
-        status : Joi.string().valid(Constants.TYPE.KYC_PENDING, Constants.TYPE.KYC_SUBMITTED, Constants.TYPE.ACTIVE, Constants.TYPE.SUSPENDED).required()
+        status : Joi.string().valid(Constants.TYPE.PENDING, Constants.TYPE.SUBMITTED, Constants.TYPE.ACTIVE, Constants.TYPE.REJECTED).required()
     });
 
 }
