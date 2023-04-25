@@ -12,6 +12,7 @@ import notificationRoute from '../routes/notification-route';
 import auth from '../middlewares/auth-middleware';
 import fundRoute from './fund-route';
 import navigationRoute from './navigation-route';
+import merchantRoute from './merchant-route';
 
 
 router.use('/auth', authRoute);
@@ -23,6 +24,7 @@ router.use('/navigation',auth,navigationRoute)
 router.use('/state', stateRoute);
 router.use('/city', cityRoute);
 router.use('/notification', notificationRoute);
+router.use('/merchant', merchantRoute);
 
 
 

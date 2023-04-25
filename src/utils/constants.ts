@@ -7,6 +7,10 @@ class Constants {
       ROLE_OPERATOR: 'Operator'
    }
    
+   static ENTITY = {
+      TYPE_TEST: 'test'
+   }
+
    static STATUS = {
       ENABLE: 'enable',
       DISABLE: 'disable',

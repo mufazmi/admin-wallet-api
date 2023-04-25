@@ -1,20 +1,26 @@
 import Merchant from "../models/merchant-model"
-import { InferCreationAttributes, InferAttributes } from 'sequelize';
-import bcrypt from 'bcrypt';
+import { InferCreationAttributes } from 'sequelize';
+import BusinessModel from "../models/business-model";
 
-class MerchantService{
+class MerchantService {
 
-    createMerchant = async (data:InferCreationAttributes<Merchant>) => await Merchant.create(data);
+    create = async (data: InferCreationAttributes<Merchant>) => await Merchant.create(data);
 
-    findMerchant = async (filter:any) => await Merchant.findOne({where:filter});
+    findOne = async (filter: any) => await Merchant.findOne({
+        where: filter, include: {
+            model: BusinessModel,
+            as: 'business'
+        }
+    });
 
-    updateMerchant = async (filter:any,data:any) => await Merchant.update(data,{where:filter});
+    findAll = async (filter: any) => await Merchant.findAll({
+        where: filter, include: {
+            model: BusinessModel,
+            as: 'business'
+        }
+    });
 
-    verifyPassword =  (plane:string,hash:string) : boolean =>{
-        const isPasswordMatched = bcrypt.compareSync(plane,hash)
-        console.log({isPasswordMatched});
-        return isPasswordMatched;
-    }
+    update = async (filter: any, data: any) => await Merchant.update(data, { where: filter });
 
 }
 

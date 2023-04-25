@@ -110,8 +110,6 @@ Merchant.beforeCreate((user)=>{
 
 Merchant.hasMany(Otp,{sourceKey:'id',foreignKey:'merchant_id',as:'otps'});
 
-Merchant.hasMany(Otp,{sourceKey:'id',foreignKey:'merchant_id',as:'otps'});
-
 Merchant.hasOne(MerchantWalletModel,{sourceKey:'id',foreignKey:'merchant_id',as:'wallet'});
 
 Merchant.hasOne(BusinessModel,{sourceKey:'id',foreignKey:'merchant_id',as:'business'});
