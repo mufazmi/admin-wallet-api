@@ -6,17 +6,21 @@ interface RemoveAllArgs {
 }
 
 class FileHelper {
-
+  
   removeAll = ({ base = '', paths }: RemoveAllArgs): boolean => {
-    paths.forEach((path) => {
-      if (path) {
-        fs.unlinkSync(base + path);
-      }
-    });
-    return true;
+    try {
+      paths.forEach((path) => {
+        if (path) {
+          fs.unlinkSync(base + path);
+        }
+      });
+      return true;
+    } catch (err) {
+      console.error('Error while removing files:', err);
+      return false;
+    }
   };
 
-  
 }
 
 export default new FileHelper

@@ -41,7 +41,7 @@ class MerchantController {
         }
         const data = await merchantService.update({ id }, { status: body.status });
         if (data && body.status === Constants.STATUS.REJECTED) {
-            const kycDoc = await kycDocumentService.findOne({ merchat_id: id });
+            const kycDoc = await kycDocumentService.findOne({ merchant_id: id });
             if (kycDoc) {
                 const isDestroyed = await kycDoc?.destroy();
                 // if (isDestroyed) {
