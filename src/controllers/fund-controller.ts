@@ -49,16 +49,16 @@ class MerchantFundController {
         if (adminWallet || adminWallet!.wallet < fund.amount)
             return next(ErrorHandler.forbidden(Messages.WALLET.WALLET_INSUFFICIENT_BALANCE));
 
-        // const walletSummary : InferCreationAttributes<AdminWalletTransactionModel> = {
-        //     type:Constants.WALLET.TYPE_WALLET,
-        //     transaction_type:Constants.TRANSACTION.TYPE_DEBIT,
-        //     transaction:'From Wallet To Merchantt',
-        //     amount:fund.amount,
-        //     opening_balance:adminWallet!.wallet,
-        //     closing_balance:adminWallet!.wallet - fund.amount,
-        //     status:Constants.TRANSACTION.STATUS_SUCCESS,
-        //     remark:'On Merchant Fund Request',
-        // };
+        const walletSummary : InferCreationAttributes<AdminWalletTransactionModel> = new AdminWalletTransactionModel({
+            type:Constants.WALLET.TYPE_WALLET,
+            transaction_type:Constants.TRANSACTION.TYPE_DEBIT,
+            transaction:'From Wallet To Merchantt',
+            amount:fund.amount,
+            opening_balance:adminWallet!.wallet,
+            closing_balance:adminWallet!.wallet - fund.amount,
+            status:Constants.TRANSACTION.STATUS_SUCCESS,
+            remark:'On Merchant Fund Request',
+        });
         await adminWalletService.update({ id: adminWallet!.id }, { wallet: adminWallet!.wallet - fund.amount });
         // await adminWalletTransactionService.create(walletSummary);
         // await merchantWal

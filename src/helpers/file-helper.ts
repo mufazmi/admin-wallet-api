@@ -6,7 +6,7 @@ interface RemoveAllArgs {
 }
 
 class FileHelper {
-  
+
   removeAll = ({ base = '', paths }: RemoveAllArgs): boolean => {
     try {
       paths.forEach((path) => {
