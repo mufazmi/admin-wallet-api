@@ -12,6 +12,7 @@ import { InferAttributes, InferCreationAttributes } from "sequelize";
 import AdminWalletModel from "../models/admin-wallet";
 import adminWalletTransactionService from "../services/admin-wallet-transaction-service";
 import AdminWalletTransactionModel from "../models/admin-wallet-transaction-model";
+import db from "../configs/db/db";
 
 class MerchantFundController {
 
@@ -50,19 +51,36 @@ class MerchantFundController {
         if (!adminWallet || adminWallet!.wallet < fund.amount)
             return next(ErrorHandler.forbidden(Messages.WALLET.WALLET_INSUFFICIENT_BALANCE));
 
-        const walletSummary : InferCreationAttributes<AdminWalletTransactionModel> = new AdminWalletTransactionModel({
-            type:Constants.WALLET.TYPE_WALLET,
-            transaction_type:Constants.TRANSACTION.TYPE_DEBIT,
-            transaction:'From Wallet To Merchantt',
-            amount:fund.amount,
-            opening_balance:adminWallet!.wallet,
-            closing_balance:adminWallet!.wallet - fund.amount,
-            status:Constants.TRANSACTION.STATUS_SUCCESS,
-            remark:'On Merchant Fund Request',
-        });
-        console.log("transaction type",walletSummary)
-        await adminWalletService.update({ id: adminWallet!.id }, { wallet: adminWallet!.wallet - fund.amount });
-        await adminWalletTransactionService.create(new AdminWalletTransactionModel(walletSummary))
+        const t = await db.transaction();
+
+        try{
+
+
+            const walletSummary : InferCreationAttributes<AdminWalletTransactionModel> = new AdminWalletTransactionModel({
+                type:Constants.WALLET.TYPE_WALLET,
+                transaction_type:Constants.TRANSACTION.TYPE_DEBIT,
+                transaction:'From Wallet To Merchantt',
+                amount:fund.amount,
+                opening_balance:adminWallet!.wallet,
+                closing_balance:adminWallet!.wallet - fund.amount,
+                status:Constants.TRANSACTION.STATUS_SUCCESS,
+                remark:'On Merchant Fund Request',
+            });
+            await AdminWalletTransactionModel.create(walletSummary,{transaction:t});
+            
+            await adminWalletService.update({ id: adminWallet!.id }, { wallet: adminWallet!.wallet - fund.amount });
+            await adminWalletTransactionService.create(walletSummary)
+
+            t.commit();
+
+        }
+        catch(e){
+            console.log("Catched Exception is=====>",e)
+            t.rollback();
+        }
+
+
+ 
         // await adminWalletTransactionService.create(walletSummary);
         // await merchantWal
 
