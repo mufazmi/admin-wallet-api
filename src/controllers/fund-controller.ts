@@ -13,12 +13,15 @@ import AdminWalletModel from "../models/admin-wallet";
 import adminWalletTransactionService from "../services/admin-wallet-transaction-service";
 import AdminWalletTransactionModel from "../models/admin-wallet-transaction-model";
 import db from "../configs/db/db";
+import MerchantWalletModel from "../models/merchant-wallet";
+import MerchantWalletTransactionModel from "../models/merchant-wallet-transaction";
+import merchantWalletTransactionService from "../services/merchant-wallet-transaction-service";
 
 class MerchantFundController {
 
     findOne = async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
-        console.log({id})
+        console.log({ id })
         const data = await merchantFundService.findOne({ id });
         return data ? responseSuccess({ res: res, message: Messages.MERCHANT.FUND_MERCHANT_FOUND, data: data }) : next(ErrorHandler.notFound(Messages.MERCHANT.FUND_MERCHANT_NOT_FOUND));
     }
@@ -35,11 +38,13 @@ class MerchantFundController {
 
     approve = async (req: AuthRequest, res: Response, next: NextFunction) => {
         const { admin } = req;
-        const body = await fundValidation.update.validateAsync(req.body);
         const { id } = req.params;
-
         const timestamp: Date = new Date();
+
+        const body = await fundValidation.update.validateAsync(req.body);
+
         const fund = await fundService.findOne({ id });
+
         if (!fund)
             return next(ErrorHandler.notFound(Messages.FUND.NOT_FOUND))
 
@@ -51,40 +56,56 @@ class MerchantFundController {
         if (!adminWallet || adminWallet!.wallet < fund.amount)
             return next(ErrorHandler.forbidden(Messages.WALLET.WALLET_INSUFFICIENT_BALANCE));
 
+        const merchantWallet : InferAttributes<MerchantWalletModel> | null = await merchantWall.findOne({})
+
+        if (!merchantWallet || merchantWallet!.wallet < fund.amount)
+            return next(ErrorHandler.forbidden(Messages.WALLET.WALLET_INSUFFICIENT_BALANCE));
+
         const t = await db.transaction();
 
-        try{
+        try {
+            const adminWalletSummary: Omit<InferCreationAttributes<AdminWalletTransactionModel>, 'id' | 'created_by' | 'updated_by'> = {
+                type: Constants.WALLET.TYPE_WALLET,
+                transaction_type: Constants.TRANSACTION.TYPE_DEBIT,
+                transaction: 'From Wallet To Merchant',
+                amount: fund.amount,
+                opening_balance: adminWallet!.wallet,
+                closing_balance: adminWallet!.wallet - fund.amount,
+                status: Constants.TRANSACTION.STATUS_SUCCESS,
+                remark: 'On Merchant Fund Request',
+            };
 
+            const merchantWalletSummary: Omit<InferCreationAttributes<MerchantWalletTransactionModel>, 'id' | 'created_by' | 'updated_by'> = {
+                type: Constants.WALLET.TYPE_WALLET,
+                transaction_type: Constants.TRANSACTION.TYPE_CREDIT,
+                transaction: 'From Admin To Merchant',
+                amount: fund.amount,
+                opening_balance: adminWallet!.wallet,
+                closing_balance: adminWallet!.wallet - fund.amount,
+                status: Constants.TRANSACTION.STATUS_SUCCESS,
+                remark: 'On Merchant Fund Request'
+            }
 
-            const walletSummary : InferCreationAttributes<AdminWalletTransactionModel> = new AdminWalletTransactionModel({
-                type:Constants.WALLET.TYPE_WALLET,
-                transaction_type:Constants.TRANSACTION.TYPE_DEBIT,
-                transaction:'From Wallet To Merchantt',
-                amount:fund.amount,
-                opening_balance:adminWallet!.wallet,
-                closing_balance:adminWallet!.wallet - fund.amount,
-                status:Constants.TRANSACTION.STATUS_SUCCESS,
-                remark:'On Merchant Fund Request',
-            });
-            await AdminWalletTransactionModel.create(walletSummary,{transaction:t});
-            
-            await adminWalletService.update({ id: adminWallet!.id }, { wallet: adminWallet!.wallet - fund.amount });
-            await adminWalletTransactionService.create(walletSummary)
+            console.log(merchantWalletSummary)
 
+            await AdminWalletTransactionModel.create(adminWalletSummary, { transaction: t });
+
+            await AdminWalletModel.update({ wallet: adminWallet!.wallet - fund.amount }, { where: { id: adminWallet!.id } });
             t.commit();
 
         }
-        catch(e){
-            console.log("Catched Exception is=====>",e)
+        catch (e) {
+            console.log("Catched Exception is=====>", e)
             t.rollback();
+            return res.send(e);
         }
 
 
- 
+
         // await adminWalletTransactionService.create(walletSummary);
         // await merchantWal
 
-        
+
         return res.send("ok")
 
     }
