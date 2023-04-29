@@ -109,7 +109,10 @@ class Messages {
     }
 
     static FUND = {
-        NOT_FOUND: 'No Fund Found'
+        ALREADY_CHANGED : 'Already Changed',
+        NOT_FOUND: 'No Fund Found',
+        APPROVED_SUCCESS : 'Fund Approved Successfully',
+        APPROVED_FAILED : 'Fund Approved Failed'
     }
 
 

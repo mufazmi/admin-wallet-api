@@ -17,6 +17,7 @@ import MerchantWalletModel from "../models/merchant-wallet";
 import MerchantWalletTransactionModel from "../models/merchant-wallet-transaction";
 import merchantWalletTransactionService from "../services/merchant-wallet-transaction-service";
 import merchantWalletService from "../services/merchant-wallet-service";
+import MerchantFundModel from "../models/funds";
 
 class MerchantFundController {
 
@@ -48,6 +49,9 @@ class MerchantFundController {
 
         if (!fund)
             return next(ErrorHandler.notFound(Messages.FUND.NOT_FOUND))
+
+        if (fund.status == body.status)
+            return next(ErrorHandler.badRequest(Messages.FUND.ALREADY_CHANGED))
 
         if (body.action == Constants.STATUS.REJECTED)
             await fundService.update({ id }, body);
@@ -95,22 +99,17 @@ class MerchantFundController {
 
             await AdminWalletModel.update({ wallet: adminWallet.wallet - fund.amount }, { where: { id: adminWallet.id }, transaction: t });
 
+            await MerchantFundModel.update({ status: Constants.STATUS.APPROVED }, { where: { merchant_id: fund.merchant_id }, transaction: t })
+
             t.commit();
 
         }
         catch (e) {
-            console.log("Catched Exception is=====>", e)
             t.rollback();
-            return res.send(e);
+            return next(ErrorHandler.notFound(Messages.FUND.APPROVED_FAILED));
         }
 
-
-
-        // await adminWalletTransactionService.create(walletSummary);
-        // await merchantWal
-
-
-        return res.send("ok")
+        return responseSuccess({ res: res, message: Messages.FUND.APPROVED_SUCCESS })
 
     }
 
