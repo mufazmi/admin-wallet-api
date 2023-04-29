@@ -73,6 +73,7 @@ class Messages {
     }
 
     static WALLET = {
+        NOT_FOUND : 'No Wallet Found',
         WALLET_INSUFFICIENT_BALANCE: 'Insufficient Balance',
         WALLET_POOL_INSUFFICIENT_BALANCE: 'Insufficient Balance In Your Pool Account',
         WALLET_TRANSACTION_CREATED: 'Wallet Transaction Created Successfully',

@@ -16,6 +16,7 @@ import db from "../configs/db/db";
 import MerchantWalletModel from "../models/merchant-wallet";
 import MerchantWalletTransactionModel from "../models/merchant-wallet-transaction";
 import merchantWalletTransactionService from "../services/merchant-wallet-transaction-service";
+import merchantWalletService from "../services/merchant-wallet-service";
 
 class MerchantFundController {
 
@@ -56,10 +57,10 @@ class MerchantFundController {
         if (!adminWallet || adminWallet!.wallet < fund.amount)
             return next(ErrorHandler.forbidden(Messages.WALLET.WALLET_INSUFFICIENT_BALANCE));
 
-        const merchantWallet : InferAttributes<MerchantWalletModel> | null = await merchantWall.findOne({})
+        const merchantWallet: InferAttributes<MerchantWalletModel> | null = await merchantWalletService.findOne({ merchant_id: fund.merchant_id })
 
-        if (!merchantWallet || merchantWallet!.wallet < fund.amount)
-            return next(ErrorHandler.forbidden(Messages.WALLET.WALLET_INSUFFICIENT_BALANCE));
+        if (!merchantWallet)
+            return next(ErrorHandler.forbidden(Messages.WALLET.NOT_FOUND));
 
         const t = await db.transaction();
 
@@ -80,17 +81,20 @@ class MerchantFundController {
                 transaction_type: Constants.TRANSACTION.TYPE_CREDIT,
                 transaction: 'From Admin To Merchant',
                 amount: fund.amount,
-                opening_balance: adminWallet!.wallet,
-                closing_balance: adminWallet!.wallet - fund.amount,
+                opening_balance: merchantWallet.balance,
+                closing_balance: merchantWallet.balance + fund.amount,
                 status: Constants.TRANSACTION.STATUS_SUCCESS,
                 remark: 'On Merchant Fund Request'
             }
 
-            console.log(merchantWalletSummary)
-
             await AdminWalletTransactionModel.create(adminWalletSummary, { transaction: t });
 
-            await AdminWalletModel.update({ wallet: adminWallet!.wallet - fund.amount }, { where: { id: adminWallet!.id } });
+            await MerchantWalletTransactionModel.create(merchantWalletSummary, { transaction: t });
+
+            await MerchantWalletModel.update({ balance: merchantWallet.balance + fund.amount }, { where: { merchant_id: fund.merchant_id }, transaction: t });
+
+            await AdminWalletModel.update({ wallet: adminWallet.wallet - fund.amount }, { where: { id: adminWallet.id }, transaction: t });
+
             t.commit();
 
         }
