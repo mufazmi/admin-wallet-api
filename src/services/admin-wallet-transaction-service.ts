@@ -4,11 +4,13 @@ import AdminWalletTransaction from "../models/admin-wallet-transaction-model"
 
 class AdminWalletTransactionService{
 
-    create = async (data:InferCreationAttributes<AdminWalletTransaction>) => await AdminWalletTransaction.create(data);
-    // create = async (data:InferCreationAttributes<AdminWalletTransaction>) => {
-    //     console.log(await AdminWalletTransaction.create(data).toString())
-    //     return await AdminWalletTransaction.create(data)
-    // };
+    // create = async (data:InferCreationAttributes<AdminWalletTransaction>) => await AdminWalletTransaction.create(data);
+
+    create = async (data:InferCreationAttributes<AdminWalletTransaction>) => {
+        console.log(await AdminWalletTransaction.create(data).toString())
+        console.log(data)
+        return await AdminWalletTransaction.create(data)
+    };
 
     findOne = async (filter:any) => await AdminWalletTransaction.findOne({where:filter});
 

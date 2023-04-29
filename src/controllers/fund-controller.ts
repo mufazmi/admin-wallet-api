@@ -17,7 +17,8 @@ class MerchantFundController {
 
     findOne = async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
-        const data = await merchantFundService.findAll({ id });
+        console.log({id})
+        const data = await merchantFundService.findOne({ id });
         return data ? responseSuccess({ res: res, message: Messages.MERCHANT.FUND_MERCHANT_FOUND, data: data }) : next(ErrorHandler.notFound(Messages.MERCHANT.FUND_MERCHANT_NOT_FOUND));
     }
 
@@ -46,7 +47,7 @@ class MerchantFundController {
 
         const adminWallet: InferAttributes<AdminWalletModel> | null = await adminWalletService.findOne({})
 
-        if (adminWallet || adminWallet!.wallet < fund.amount)
+        if (!adminWallet || adminWallet!.wallet < fund.amount)
             return next(ErrorHandler.forbidden(Messages.WALLET.WALLET_INSUFFICIENT_BALANCE));
 
         const walletSummary : InferCreationAttributes<AdminWalletTransactionModel> = new AdminWalletTransactionModel({
@@ -59,10 +60,14 @@ class MerchantFundController {
             status:Constants.TRANSACTION.STATUS_SUCCESS,
             remark:'On Merchant Fund Request',
         });
+        console.log("transaction type",walletSummary)
         await adminWalletService.update({ id: adminWallet!.id }, { wallet: adminWallet!.wallet - fund.amount });
+        await adminWalletTransactionService.create(new AdminWalletTransactionModel(walletSummary))
         // await adminWalletTransactionService.create(walletSummary);
         // await merchantWal
+
         
+        return res.send("ok")
 
     }
 
